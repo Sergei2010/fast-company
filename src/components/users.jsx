@@ -15,11 +15,13 @@ const Users = () => {
 	const renderPhrase = number => {
 		number = users.length
 		return number === 0
-			? 'Никто не'
-			: [1, 5, 6, 7, 8, 9, 10, 11, 12].find(el => el === number)
-			? number + ' человек'
+			? 'Никто не тусанёт'
+			: [5, 6, 7, 8, 9, 10, 11, 12].find(el => el === number)
+			? number + ' человек тусанут'
 			: [2, 3, 4].find(el => el === number)
-			? number + ' человека'
+			? number + ' человека тусанёт'
+			: number === 1
+			? number + ' человек тусанёт'
 			: 'Весь этот коллектив'
 	}
 
@@ -38,7 +40,7 @@ const Users = () => {
 		<>
 			<h1>
 				<span className={titleClasse + renderColor()}>
-					{renderPhrase()} тусанёт с тобой сегодня
+					{renderPhrase()} с тобой сегодня
 				</span>
 			</h1>
 			{hideTable()}
