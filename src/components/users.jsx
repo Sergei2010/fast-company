@@ -40,7 +40,7 @@ const Users = () => {
 					{renderPhrase(users.length)} с тобой сегодня
 				</span>
 			</h1>
-			{hideTable(users.length)}
+			{users.length > 0 &&
 			<table className='table'>
 				<thead>
 					<tr>
@@ -83,7 +83,7 @@ const Users = () => {
 						)
 					})}
 				</tbody>
-			</table>
+			</table>}
 		</>
 	)
 }
