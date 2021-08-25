@@ -28,11 +28,6 @@ const Users = () => {
 		return num === 0 ? 'danger' : 'primary'
 	}
 
-	const hideTable = num => {
-		const table = document.querySelector('table')
-		return num === 0 ? (table.innerHTML = '') : ''
-	}
-
 	return (
 		<>
 			<h1>
