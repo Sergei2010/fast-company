@@ -12,38 +12,35 @@ const Users = () => {
 		setUsers(updateUsers)
 	}
 
-	const renderPhrase = number => {
-		number = users.length
-		return number === 0
+	const renderPhrase = num => {
+		return num === 0
 			? 'Никто не тусанёт'
-			: [5, 6, 7, 8, 9, 10, 11, 12].find(el => el === number)
-			? number + ' человек тусанут'
-			: [2, 3, 4].find(el => el === number)
-			? number + ' человека тусанёт'
-			: number === 1
-			? number + ' человек тусанёт'
+			: [5, 6, 7, 8, 9, 10, 11, 12].find(el => el === num)
+			? num + ' человек тусанут'
+			: [2, 3, 4].find(el => el === num)
+			? num + ' человека тусанёт'
+			: num === 1
+			? num + ' человек тусанёт'
 			: 'Весь этот коллектив'
 	}
 
-	const renderColor = number => {
-		number = users.length
-		return number === 0 ? 'danger' : 'primary'
+	const renderColor = num => {
+		return num === 0 ? 'danger' : 'primary'
 	}
 
-	const hideTable = number => {
-		number = users.length
+	const hideTable = num => {
 		const table = document.querySelector('table')
-		return number === 0 ? (table.innerHTML = '') : ''
+		return num === 0 ? (table.innerHTML = '') : ''
 	}
 
 	return (
 		<>
 			<h1>
-				<span className={titleClasse + renderColor()}>
-					{renderPhrase()} с тобой сегодня
+				<span className={titleClasse + renderColor(users.length)}>
+					{renderPhrase(users.length)} с тобой сегодня
 				</span>
 			</h1>
-			{hideTable()}
+			{hideTable(users.length)}
 			<table className='table'>
 				<thead>
 					<tr>
