@@ -1,9 +1,9 @@
 import React from 'react'
 
-const BookMark = ({changeBookMark}) => {
+const BookMark = ({ changeBookMark, userId }) => {
 	return (
-		<a href='/' onClick={e => changeBookMark(e)}>
-			<i className='bi bi-bookmark'></i>
+		<a href='/' onClick={(e, user) => changeBookMark(e, user)}>
+			<i className='bi bi-bookmark' data-type={userId}></i>
 		</a>
 	)
 }

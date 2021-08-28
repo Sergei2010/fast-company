@@ -11,7 +11,7 @@ const User = ({ user, bookmark, onDelete, ...rest }) => {
 			<td key={user.completedMeetings}>{user.completedMeetings}</td>
 			<td key={user.rate}>{user.rate} /5</td>
 			<td key={bookmark}>
-				<BookMark {...rest} />
+				<BookMark userId={user._id} {...rest} />
 			</td>
 			<td key={user.key}>
 				<button

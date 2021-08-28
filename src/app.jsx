@@ -1,39 +1,35 @@
 import React, { useState } from 'react'
 import Users from './components/users'
 import api from './API'
+import {
+	Badge_Classe,
+	Title_Classe,
+	handleRenderPhrase,
+	handleRenderColor,
+} from './utils'
 
 const App = () => {
 	const [users, setUsers] = useState(api.users.fetchAll())
-
-	const handleBadgeClasse = 'm-2 badge bg-'
-	const handleTitleClasse = 'badge mt-2 bg-'
 
 	const handleDelete = userId => {
 		const updateUsers = users.filter(user => user._id !== userId)
 		setUsers(updateUsers)
 	}
 
-	const handleRenderPhrase = num => {
-		return num === 0
-			? 'Никто не тусанёт'
-			: [5, 6, 7, 8, 9, 10, 11, 12].find(el => el === num)
-			? num + ' человек тусанут'
-			: [2, 3, 4].find(el => el === num)
-			? num + ' человека тусанёт'
-			: num === 1
-			? num + ' человек тусанёт'
-			: 'Весь этот коллектив'
-	}
-
-	const handleRenderColor = num => {
-		return num === 0 ? 'danger' : 'primary'
-	}
-
 	const handleChangeBookMark = e => {
 		e.preventDefault()
+		const id = e.target.dataset.type
+		addBookMark(users, id)
 		return e.target.className === 'bi bi-bookmark'
 			? (e.target.className = 'bi bi-bookmark-fill')
 			: (e.target.className = 'bi bi-bookmark')
+	}
+
+	const addBookMark = (users, id) => {
+		const userChecked = users.find(user => user._id === id)
+		return userChecked.bookMark === undefined || userChecked.bookMark === ''
+			? (userChecked.bookMark = 'bookMark')
+			: (userChecked.bookMark = '')
 	}
 
 	return (
@@ -41,12 +37,11 @@ const App = () => {
 			onRenderColor={handleRenderColor}
 			onRenderPhrase={handleRenderPhrase}
 			onDelete={handleDelete}
-			badgeClasse={handleBadgeClasse}
-			titleClasse={handleTitleClasse}
-			users={users}
+			badgeClasse={Badge_Classe}
+			titleClasse={Title_Classe}
 			changeBookMark={handleChangeBookMark}
+			users={users}
 		/>
 	)
 }
-
 export default App
