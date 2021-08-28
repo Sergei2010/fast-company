@@ -12,8 +12,10 @@ const App = () => {
 	const [users, setUsers] = useState(api.users.fetchAll())
 
 	const handleDelete = userId => {
+		console.log('users--before--delete: ', users)
 		const updateUsers = users.filter(user => user._id !== userId)
 		setUsers(updateUsers)
+		console.log('users--after--delete: ', users)
 	}
 
 	const handleChangeBookMark = e => {
@@ -27,9 +29,13 @@ const App = () => {
 
 	const addBookMark = (users, id) => {
 		const userChecked = users.find(user => user._id === id)
-		return userChecked.bookMark === undefined || userChecked.bookMark === ''
-			? (userChecked.bookMark = 'bookMark')
-			: (userChecked.bookMark = '')
+		const result =
+			userChecked.bookMark === undefined || userChecked.bookMark === ''
+				? (userChecked.bookMark = 'bookMark')
+				: (userChecked.bookMark = '')
+		Object.assign(userChecked, { bookMark: result })
+		setUsers(users)
+		console.log('users--after--bookMark: ', users)
 	}
 
 	return (
