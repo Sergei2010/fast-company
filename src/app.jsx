@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Users from './components/users'
-import api from './API'
+import api from './API/index'
 import {
 	Badge_Classe,
 	Title_Classe,
@@ -15,7 +15,7 @@ const App = () => {
 		console.log('users--before--delete: ', users)
 		const updateUsers = users.filter(user => user._id !== userId)
 		setUsers(updateUsers)
-		console.log('users--after--delete: ', users)
+		console.log('users--after--delete: ', updateUsers)
 	}
 
 	const handleChangeBookMark = e => {
