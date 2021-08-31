@@ -2,6 +2,8 @@ export const Badge_Classe = 'm-2 badge bg-'
 
 export const Title_Classe = 'badge mt-2 bg-'
 
+export const Bookmark_Classe = 'bi bi-bookmark'
+
 export const handleRenderPhrase = num => {
 	return num === 0
 		? 'Никто не тусанёт'
