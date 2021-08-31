@@ -10,12 +10,9 @@ import {
 
 const App = () => {
 	const [users, setUsers] = useState(api.users.fetchAll())
-
 	const handleDelete = userId => {
-		console.log('users--before--delete: ', users)
 		const updateUsers = users.filter(user => user._id !== userId)
 		setUsers(updateUsers)
-		console.log('users--after--delete: ', updateUsers)
 	}
 
 	const handleChangeBookMark = e => {
