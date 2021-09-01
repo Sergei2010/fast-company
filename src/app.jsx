@@ -4,25 +4,29 @@ import api from './API/index'
 import {
 	Badge_Classe,
 	Title_Classe,
-	Bookmark_Classe,
 	handleRenderPhrase,
 	handleRenderColor,
 } from './utils'
 
 const App = () => {
 	const [users, setUsers] = useState(api.users.fetchAll())
-	const [bookmarkClasse, setBookmarkClasse] = useState(Bookmark_Classe)
 
 	const handleDelete = userId => {
 		const updateUsers = users.filter(user => user._id !== userId)
 		setUsers(updateUsers)
 	}
 
-	const setChangeBookMark = e => {
-		e.preventDefault()
-		setBookmarkClasse(Bookmark_Classe + '-fill')
-		e.target.className = bookmarkClasse
-		console.log('bookmarkClasse: ', bookmarkClasse)
+	const handleToggleBookMark = id => {
+		console.log('OK')
+		setUsers(
+			users.filter(user => {
+				if (user._id === id) {
+					user.status = !user.status
+					return user
+				}
+				return user
+			})
+		)
 	}
 
 	return (
@@ -32,7 +36,7 @@ const App = () => {
 			onDelete={handleDelete}
 			badgeClasse={Badge_Classe}
 			titleClasse={Title_Classe}
-			changeBookMark={setChangeBookMark}
+			onToggleBookMark={handleToggleBookMark}
 			users={users}
 		/>
 	)

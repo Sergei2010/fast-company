@@ -1,13 +1,10 @@
 import React from 'react'
-import { Bookmark_Classe } from '../utils'
 
-const BookMark = ({ changeBookMark, userId, bookmarkClasse }) => {
+const BookMark = ({ onToggleBookMark, userId, status }) => {
 	return (
-		<>
-			<a href='/' onClick={(e, userId) => changeBookMark(e, userId)}>
-				<i className={Bookmark_Classe} data-type={userId}></i>
-			</a>
-		</>
+		<button onClick={() => onToggleBookMark(userId)}>
+			<i className={'bi bi-bookmark' + (status ? '-heart-fill' : '')}></i>
+		</button>
 	)
 }
 
