@@ -10,29 +10,23 @@ import {
 
 const App = () => {
 	const [users, setUsers] = useState(api.users.fetchAll())
+
 	const handleDelete = userId => {
 		const updateUsers = users.filter(user => user._id !== userId)
 		setUsers(updateUsers)
 	}
 
-	const handleChangeBookMark = e => {
-		e.preventDefault()
-		const id = e.target.dataset.type
-		addBookMark(users, id)
-		return e.target.className === 'bi bi-bookmark'
-			? (e.target.className = 'bi bi-bookmark-fill')
-			: (e.target.className = 'bi bi-bookmark')
-	}
-
-	const addBookMark = (users, id) => {
-		const userChecked = users.find(user => user._id === id)
-		const result =
-			userChecked.bookMark === undefined || userChecked.bookMark === ''
-				? (userChecked.bookMark = 'bookMark')
-				: (userChecked.bookMark = '')
-		Object.assign(userChecked, { bookMark: result })
-		setUsers(users)
-		console.log('users--after--bookMark: ', users)
+	const handleToggleBookMark = id => {
+		console.log('OK')
+		setUsers(
+			users.filter(user => {
+				if (user._id === id) {
+					user.status = !user.status
+					return user
+				}
+				return user
+			})
+		)
 	}
 
 	return (
@@ -42,7 +36,7 @@ const App = () => {
 			onDelete={handleDelete}
 			badgeClasse={Badge_Classe}
 			titleClasse={Title_Classe}
-			changeBookMark={handleChangeBookMark}
+			onToggleBookMark={handleToggleBookMark}
 			users={users}
 		/>
 	)

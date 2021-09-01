@@ -1,10 +1,10 @@
 import React from 'react'
 
-const BookMark = ({ changeBookMark, userId }) => {
+const BookMark = ({ onToggleBookMark, userId, status }) => {
 	return (
-		<a href='/' onClick={(e, user) => changeBookMark(e, user)}>
-			<i className='bi bi-bookmark' data-type={userId}></i>
-		</a>
+		<button onClick={() => onToggleBookMark(userId)}>
+			<i className={'bi bi-bookmark' + (status ? '-heart-fill' : '')}></i>
+		</button>
 	)
 }
 

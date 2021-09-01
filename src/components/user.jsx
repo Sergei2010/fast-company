@@ -2,18 +2,25 @@ import React from 'react'
 import Qualities from './qualities'
 import BookMark from './bookmark'
 
-const User = ({ user, bookmark, onDelete, ...rest }) => {
+const User = ({ user, bookmark, onDelete, onToggleBookMark, ...rest }) => {
 	return (
 		<tr key={user._id}>
-			<td key={user.name}>{user.name}</td>
-			<Qualities qualities={user.qualities} {...rest} />
-			<td key={user.profession._id}>{user.profession.name}</td>
-			<td key={user.completedMeetings}>{user.completedMeetings}</td>
-			<td key={user.rate}>{user.rate} /5</td>
-			<td key={bookmark}>
-				<BookMark userId={user._id} {...rest} />
+			<td>{user.name}</td>
+			<td>
+				<Qualities qualities={user.qualities} {...rest} />
 			</td>
-			<td key={user.key}>
+			<td>{user.profession.name}</td>
+			<td>{user.completedMeetings}</td>
+			<td>{user.rate} /5</td>
+			<td>
+				<BookMark
+					status={user.status}
+					userId={user._id}
+					{...rest}
+					onToggleBookMark={onToggleBookMark}
+				/>
+			</td>
+			<td>
 				<button
 					onClick={() => onDelete(user._id)}
 					type='button'
