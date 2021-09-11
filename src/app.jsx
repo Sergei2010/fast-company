@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import Users from "./components/users";
 import api from "./API/index";
-import {
-    Badge_Classe,
-    Title_Classe,
-    handleRenderPhrase,
-    handleRenderColor
-} from "./utils/functions";
+import { Badge_Classe, Title_Classe } from "./utils/functions";
 
 const App = () => {
     const [users, setUsers] = useState(api.users.fetchAll());
@@ -31,8 +26,6 @@ const App = () => {
 
     return (
         <Users
-            onRenderColor={handleRenderColor}
-            onRenderPhrase={handleRenderPhrase}
             onDelete={handleDelete}
             badgeClasse={Badge_Classe}
             titleClasse={Title_Classe}

@@ -5,7 +5,7 @@ import _ from "lodash";
 const Pagination = ({ onPageChange, itemsCount, pageSize, currentPage }) => {
     const pageCount = Math.ceil(itemsCount / pageSize);
     if (pageCount === 1) return null;
-    console.log("currentPage: ", { currentPage });
+    // console.log("currentPage: ", { currentPage });
     const pages = _.range(1, pageCount + 1);
     return (
         <nav>
