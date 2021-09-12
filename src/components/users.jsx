@@ -7,11 +7,16 @@ import PropTypes from "prop-types";
 import GroupList from "./groupList";
 import api from "../API";
 
-const Users = ({ users: allUsers, onRenderClasse, ...rest }) => {
+const Users = ({ users, onRenderClasse, ...rest }) => {
+    let filteredUsers;
+    let count;
+    let usersCrops;
+
     const pageSize = 2;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
+
     useEffect(() => {
         // Вызывается каждый раз, когда что-либо монтируется в DOM, когда отслеживаемый элемент меняется в DOMе и когда элемент демонтируется
         api.professions.fetchAll().then((data) => {
@@ -21,17 +26,27 @@ const Users = ({ users: allUsers, onRenderClasse, ...rest }) => {
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
+
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
-    const filteredUsers = selectedProf
+    /* const filteredUsers = selectedProf
         ? allUsers.filter((user) => user.profession === selectedProf)
         : allUsers;
     const count = filteredUsers.length;
-    const usersCrops = paginate(filteredUsers, currentPage, pageSize);
+    const usersCrops = paginate(filteredUsers, currentPage, pageSize); */
+    if (users) {
+        filteredUsers = selectedProf
+            ? users.filter((user) => {
+                  return user.profession.name === selectedProf.name;
+              })
+            : users;
+        count = filteredUsers.length;
+        usersCrops = paginate(filteredUsers, currentPage, pageSize);
+    }
     const clearFilter = () => {
         setSelectedProf();
     };
@@ -68,15 +83,25 @@ const Users = ({ users: allUsers, onRenderClasse, ...rest }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {usersCrops.map((user) => {
-                                return (
-                                    <User
-                                        key={user._id}
-                                        user={user}
-                                        {...rest}
-                                    />
-                                );
-                            })}
+                            {Array.isArray(usersCrops)
+                                ? usersCrops.map((user) => {
+                                      return (
+                                          <User
+                                              key={user._id}
+                                              user={user}
+                                              {...rest}
+                                          />
+                                      );
+                                  })
+                                : Object.keys(usersCrops).map((user) => {
+                                      return (
+                                          <User
+                                              key={user._id}
+                                              user={user}
+                                              {...rest}
+                                          />
+                                      );
+                                  })}
                         </tbody>
                     </table>
                 )}
