@@ -33,11 +33,6 @@ const Users = ({ users, onRenderClasse, ...rest }) => {
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
-    /* const filteredUsers = selectedProf
-        ? allUsers.filter((user) => user.profession === selectedProf)
-        : allUsers;
-    const count = filteredUsers.length;
-    const usersCrops = paginate(filteredUsers, currentPage, pageSize); */
     if (users) {
         filteredUsers = selectedProf
             ? users.filter((user) => {
