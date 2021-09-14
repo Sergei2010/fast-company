@@ -7,11 +7,7 @@ import PropTypes from "prop-types";
 import GroupList from "./groupList";
 import api from "../API";
 
-const Users = ({ users, onRenderClasse, ...rest }) => {
-    let filteredUsers;
-    let count;
-    let usersCrops;
-
+const Users = ({ users: allUsers, onRenderClasse, ...rest }) => {
     const pageSize = 2;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
@@ -33,15 +29,15 @@ const Users = ({ users, onRenderClasse, ...rest }) => {
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
-    if (users) {
-        filteredUsers = selectedProf
-            ? users.filter((user) => {
-                  return user.profession.name === selectedProf.name;
-              })
-            : users;
-        count = filteredUsers.length;
-        usersCrops = paginate(filteredUsers, currentPage, pageSize);
-    }
+    const filteredUsers = selectedProf
+        ? allUsers.filter(
+              (user) =>
+                  JSON.stringify(user.profession) ===
+                  JSON.stringify(selectedProf)
+          )
+        : allUsers;
+    const count = filteredUsers.length;
+    const usersCrops = paginate(filteredUsers, currentPage, pageSize);
     const clearFilter = () => {
         setSelectedProf();
     };
