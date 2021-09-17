@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
-import App from "./app";
+import App from "./App";
 // import Users from './components/users'
 
 ReactDOM.render(
