@@ -6,7 +6,7 @@ import QualitiesList from "./qualitiesList";
 const UserPage = (userId) => {
     const idChecked = userId.userId;
     const [user, setUser] = useState();
-    const [delay, setDelay] = useState(false);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         try {
             api.users.getById(idChecked).then((data) => {
@@ -17,7 +17,7 @@ const UserPage = (userId) => {
         }
     }, []);
     setTimeout(() => {
-        setDelay(true);
+        setLoading(false);
     }, 2000);
     return (
         /* eslint-disable */
@@ -32,14 +32,17 @@ const UserPage = (userId) => {
                     <h3>completedMeetings: {user.completedMeetings}</h3>
                     <h3>rate: {user.rate}</h3>
                     <Link to="/users">
-                        <button className="btn btn-secondary mt-2">
+                        <button
+                            className="btn btn-secondary mt-2"
+                            disabled={loading}
+                        >
                             Все пользователи
                         </button>
                     </Link>
                 </div>
             ) : (
                 <div className="d-flex flex-column flex-shrink-0 p-3">
-                    {delay ? (
+                    {!loading ? (
                         <h2>{`User with id: ${idChecked} not found`}</h2>
                     ) : (
                         <p>Loading ...</p>
