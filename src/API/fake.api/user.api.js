@@ -159,5 +159,6 @@ const getById = (id) =>
 
 export default {
     fetchAll,
-    getById
+    getById,
+    users
 };
