@@ -1,5 +1,4 @@
 import React from "react";
-// import Qualities from "./qualities";
 import Quality from "./quality";
 import BookMark from "./bookmark";
 import PropTypes from "prop-types";
@@ -10,9 +9,6 @@ const User = ({ user, onDelete, onToggleBookMark, ...rest }) => {
             {user && (
                 <tr key={user._id}>
                     <td>{user.name}</td>
-                    {/* <td>
-                        <Qualities qualities={user.qualities} {...rest} />
-                    </td> */}
                     <td>
                         {qualities.map((qual) => (
                             <Quality key={qual._id} {...qual} />
@@ -22,12 +18,6 @@ const User = ({ user, onDelete, onToggleBookMark, ...rest }) => {
                     <td>{user.completedMeetings}</td>
                     <td>{user.rate} /5</td>
                     <td>
-                        {/* <BookMark
-                            status={user.status}
-                            userId={user._id}
-                            {...rest}
-                            onToggleBookMark={onToggleBookMark}
-                        /> */}
                         <BookMark
                             status={bookmark}
                             onClick={() => onToggleBookMark(_id)}
