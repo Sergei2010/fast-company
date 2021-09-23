@@ -8,13 +8,15 @@ const UserPage = (userId) => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);
     useEffect(() => {
+        let cleanupFunction = false;
         try {
             api.users.getById(idChecked).then((data) => {
-                setUser(data);
+                if (!cleanupFunction) setUser(data);
             });
         } catch (e) {
             console.error(e.message);
         }
+        return () => (cleanupFunction = true);
     }, []);
     setTimeout(() => {
         setLoading(false);
