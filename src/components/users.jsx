@@ -14,12 +14,16 @@ const Users = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
-
     const [users, setUsers] = useState();
+    const [data, setData] = useState();
+    const [searchSubString, setSearchSubString] = useState("");
+    const [placeholder, setPlaceholder] = useState("Search");
+
     useEffect(() => {
         try {
             api.users.fetchAll().then((data) => {
                 setUsers(data);
+                setData(data);
             });
         } catch (e) {
             console.error(e.message);
@@ -28,6 +32,21 @@ const Users = () => {
     const handleDelete = (userId) => {
         const updateUsers = users.filter((user) => user._id !== userId);
         setUsers(updateUsers);
+    };
+    const handleSearch = ({ target }) => {
+        const value = target.value.toLowerCase();
+        setSearchSubString(target.value);
+        const updateUsers = users.filter((user) =>
+            user.name.toLowerCase().includes(value)
+        );
+        setUsers(updateUsers);
+        if (!updateUsers.length || !value) {
+            setTimeout(() => {
+                setUsers(data);
+                setSearchSubString("");
+                setPlaceholder("Try another one ...");
+            }, 1500);
+        }
     };
     const handleToggleBookMark = (id) => {
         setUsers(
@@ -39,7 +58,6 @@ const Users = () => {
             })
         );
     };
-
     useEffect(() => {
         api.professions.fetchAll().then((data) => {
             setProfession(data);
@@ -48,7 +66,6 @@ const Users = () => {
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
-
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
@@ -57,8 +74,10 @@ const Users = () => {
     };
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
+        setUsers(data);
+        setSearchSubString("");
+        setPlaceholder("Search");
     };
-
     if (users) {
         const filteredUsers = selectedProf
             ? users.filter(
@@ -96,7 +115,13 @@ const Users = () => {
                     </div>
                 )}
                 <div className="d-flex flex-column">
-                    <SearchStatus length={count} />
+                    <SearchStatus
+                        length={count}
+                        onUserSearch={handleSearch}
+                        onClearFilter={clearFilter}
+                        placeholder={placeholder}
+                        value={searchSubString}
+                    />
                     {count > 0 && (
                         <UserTable
                             users={usersCrops}
@@ -123,6 +148,7 @@ const Users = () => {
 
 Users.propTypes = {
     users: PropTypes.array,
+    data: PropTypes.array,
     count: PropTypes.number,
     pageSize: PropTypes.number,
     handlePageChange: PropTypes.func,
