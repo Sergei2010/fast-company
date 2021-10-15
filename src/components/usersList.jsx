@@ -11,19 +11,16 @@ import _ from "lodash";
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
+    const [searchQuery, setSearchQuery] = useState("");
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
     const [users, setUsers] = useState();
-    const [data, setData] = useState();
-    const [searchSubString, setSearchSubString] = useState("");
-    const [placeholder, setPlaceholder] = useState("Search");
 
     useEffect(() => {
         try {
             api.users.fetchAll().then((data) => {
                 setUsers(data);
-                setData(data);
             });
         } catch (e) {
             console.error(e.message);
@@ -32,21 +29,6 @@ const Users = () => {
     const handleDelete = (userId) => {
         const updateUsers = users.filter((user) => user._id !== userId);
         setUsers(updateUsers);
-    };
-    const handleSearch = ({ target }) => {
-        const value = target.value.toLowerCase();
-        setSearchSubString(target.value);
-        const updateUsers = users.filter((user) =>
-            user.name.toLowerCase().includes(value)
-        );
-        setUsers(updateUsers);
-        if (!updateUsers.length || !value) {
-            setTimeout(() => {
-                setUsers(data);
-                setSearchSubString("");
-                setPlaceholder("Try another one ...");
-            }, 1500);
-        }
     };
     const handleToggleBookMark = (id) => {
         setUsers(
@@ -65,7 +47,7 @@ const Users = () => {
     }, []);
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchQuery]);
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
@@ -73,13 +55,24 @@ const Users = () => {
         setSortBy(item);
     };
     const handleProfessionSelect = (item) => {
+        if (searchQuery !== "") {
+            setSearchQuery("");
+        }
         setSelectedProf(item);
-        setUsers(data);
-        setSearchSubString("");
-        setPlaceholder("Search");
+    };
+    const handleSearchQuery = ({ target }) => {
+        setSelectedProf(undefined);
+        setSearchQuery(target.value);
     };
     if (users) {
-        const filteredUsers = selectedProf
+        const filteredUsers = searchQuery
+            ? users.filter(
+                  (user) =>
+                      user.name
+                          .toLowerCase()
+                          .indexOf(searchQuery.toLowerCase()) !== -1
+              )
+            : selectedProf
             ? users.filter(
                   (user) =>
                       JSON.stringify(user.profession) ===
@@ -115,12 +108,13 @@ const Users = () => {
                     </div>
                 )}
                 <div className="d-flex flex-column">
-                    <SearchStatus
-                        length={count}
-                        onUserSearch={handleSearch}
-                        onClearFilter={clearFilter}
-                        placeholder={placeholder}
-                        value={searchSubString}
+                    <SearchStatus length={count} />
+                    <input
+                        type="text"
+                        name="searchQuery"
+                        placeholder="Search ..."
+                        onChange={handleSearchQuery}
+                        value={searchQuery}
                     />
                     {count > 0 && (
                         <UserTable

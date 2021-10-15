@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import UserPage from "../components/userPage";
-import UsersComponent from "../components/users";
+import UsersComponent from "../components/usersList";
 
 const Users = ({ match }) => {
     const userId = match.params.userId;
