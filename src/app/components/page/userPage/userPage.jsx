@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import api from "../API";
-import QualitiesList from "./qualitiesList";
+import api from "../../../api";
+import Qualities from "../../ui/qualities/qualitiesList";
 
 const UserPage = (userId) => {
     const idChecked = userId.userId;
@@ -29,7 +29,7 @@ const UserPage = (userId) => {
                     <h1>{user.name}</h1>
                     <h2>Профессия: {user.profession.name}</h2>
                     <span>
-                        <QualitiesList qualities={user.qualities} />
+                        <Qualities qualities={user.qualities} />
                     </span>
                     <h3>completedMeetings: {user.completedMeetings}</h3>
                     <h3>rate: {user.rate}</h3>

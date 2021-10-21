@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import SearchStatus from "./searchStatus";
-import Pagination from "./pagination";
-import { paginate } from "../utils/paginate";
+import SearchStatus from "../../ui/searchStatus";
+import Pagination from "../../common/pagination";
+import { paginate } from "../../../utils/paginate";
 import PropTypes from "prop-types";
-import GroupList from "./groupList";
-import api from "../API";
-import UserTable from "./usersTable";
+import GroupList from "../../common/groupList";
+import api from "../../../api";
+import UserTable from "../../ui/usersTable";
 import _ from "lodash";
 
-const Users = () => {
+const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [searchQuery, setSearchQuery] = useState("");
@@ -65,14 +65,18 @@ const Users = () => {
         setSearchQuery(target.value);
     };
     if (users) {
+        // eslint-disable-next-line multiline-ternary
         const filteredUsers = searchQuery
+            // eslint-disable-next-line multiline-ternary
             ? users.filter(
                   (user) =>
                       user.name
                           .toLowerCase()
                           .indexOf(searchQuery.toLowerCase()) !== -1
               )
+            // eslint-disable-next-line multiline-ternary
             : selectedProf
+            // eslint-disable-next-line multiline-ternary
             ? users.filter(
                   (user) =>
                       JSON.stringify(user.profession) ===
@@ -140,7 +144,7 @@ const Users = () => {
     return <span className="span">Loading ...</span>;
 };
 
-Users.propTypes = {
+UsersListPage.propTypes = {
     users: PropTypes.array,
     data: PropTypes.array,
     count: PropTypes.number,
@@ -149,4 +153,4 @@ Users.propTypes = {
     onRenderClasse: PropTypes.func
 };
 
-export default Users;
+export default UsersListPage;

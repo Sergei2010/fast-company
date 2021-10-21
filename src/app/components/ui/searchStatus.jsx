@@ -4,7 +4,7 @@ import {
     Title_Classe,
     handleRenderColor,
     handleRenderPhrase
-} from "../utils/functions";
+} from "../../utils/functions";
 
 const SearchStatus = ({ length, ...rest }) => {
     return (

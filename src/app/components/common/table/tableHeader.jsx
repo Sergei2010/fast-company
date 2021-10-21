@@ -29,7 +29,9 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                     <th
                         key={column}
                         onClick={
+                            // eslint-disable-next-line multiline-ternary
                             columns[column].path
+                                // eslint-disable-next-line multiline-ternary
                                 ? () => {
                                       handleSort(columns[column].path);
                                   }

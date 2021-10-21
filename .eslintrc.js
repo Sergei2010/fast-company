@@ -13,8 +13,8 @@ module.exports = {
     },
     plugins: ["react"],
     rules: {
-        indent: ["error", 4, { ignoredNodes: ["ConditionalExpression"] }],
-        indent: ["error", 2, { offsetTernaryExpressions: true }],
+        // indent: ["error", 4, { ignoredNodes: ["ConditionalExpression"] }],
+        // indent: ["error", 2, { offsetTernaryExpressions: true }],
         indent: "off",
         semi: [2, "always"],
         camelcase: "off",
@@ -22,6 +22,7 @@ module.exports = {
             "error",
             { anonymous: "always", named: "never" }
         ],
-        quotes: ["error", "double", { allowTemplateLiterals: true }]
+        quotes: ["error", "double", { allowTemplateLiterals: true }],
+        "multiline-ternary": ["error", "never"]
     }
 };

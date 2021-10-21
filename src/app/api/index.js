@@ -1,8 +1,11 @@
 // import * as users from "./fake.api/user.api";
 import professions from "./fake.api/professions.api";
 import users from "./fake.api/user.api";
-const API = {
+import qualities from "./fake.api/qualities.api";
+
+const api = {
     users,
-    professions
+    professions,
+    qualities
 };
-export default API;
+export default api;
