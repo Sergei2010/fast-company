@@ -1,13 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import UserPage from "../components/page/userPage";
+import { UserPage, UserPageEdit } from "../components/page/userPage";
 import UsersListPage from "../components/page/usersListPage";
 
 const Users = ({ match }) => {
     const userId = match.params.userId;
+    const edit = match.params.edit;
     return (
         /* eslint-disable */
-        <>{userId ? <UserPage userId={userId} /> : <UsersListPage />}</>
+        <>
+            {userId ? (
+                edit ? (
+                    <UserPageEdit edit={edit} userId={userId} />
+                ) : (
+                    <UserPage userId={userId} />
+                )
+            ) : (
+                <UsersListPage />
+            )}
+        </>
     );
 };
 

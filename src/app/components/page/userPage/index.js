@@ -1,3 +1,4 @@
 import UserPage from "./userPage";
+import UserPageEdit from "./userPageEdit";
 
-export default UserPage;
+export { UserPage, UserPageEdit };
