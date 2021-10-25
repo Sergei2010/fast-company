@@ -3,7 +3,6 @@ import TextField from "../../common/form/textField";
 import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
-import { Link } from "react-router-dom";
 import api from "../../../api";
 import PropTypes from "prop-types";
 
@@ -57,7 +56,11 @@ const UserPageEdit = ({ userId }) => {
                     {console.log("user: ", user)}
                     {console.log("qualities: ", qualities)}
                     {console.log("professions: ", professions)}
-                    <form onSubmit={handleSubmit}>
+                    <form
+                        onSubmit={handleSubmit}
+                        action={`/users/${data._id}`}
+                        method="get"
+                    >
                         <TextField
                             label="Имя"
                             name="name"
@@ -103,15 +106,13 @@ const UserPageEdit = ({ userId }) => {
                             name="qualities"
                             label="Выберите Ваши качества"
                         />
-                        <Link to={`/users/${data._id}`}>
-                            <button
-                                type="submit"
-                                // disabled={!isValid}
-                                className="btn btn-primary w-100 mx-auto"
-                            >
-                                Обновить
-                            </button>
-                        </Link>
+                        <button
+                            type="submit"
+                            // disabled={!isValid}
+                            className="btn btn-primary w-100 mx-auto"
+                        >
+                            Обновить
+                        </button>
                     </form>
                 </div>
             </div>
