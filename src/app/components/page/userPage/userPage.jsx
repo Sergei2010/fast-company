@@ -33,12 +33,12 @@ const UserPage = (userId) => {
                     </span>
                     <h3>completedMeetings: {user.completedMeetings}</h3>
                     <h3>rate: {user.rate}</h3>
-                    <Link to="/users">
+                    <Link to={`/users/${user._id}/edit`}>
                         <button
                             className="btn btn-secondary mt-2"
                             disabled={loading}
                         >
-                            Все пользователи
+                            Редактировать
                         </button>
                     </Link>
                 </div>
