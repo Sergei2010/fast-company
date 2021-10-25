@@ -19,7 +19,7 @@ const UserPageEdit = ({ userId }) => {
     // const [errors, setErrors] = useState({});
     useEffect(() => {
         api.users.getById(userId).then((data) => {
-            // console.log("data--user: ", data);
+            console.log("data--user: ", data);
             setData({
                 name: data.name,
                 email: data.email,
@@ -31,17 +31,16 @@ const UserPageEdit = ({ userId }) => {
             });
         });
         api.professions.fetchAll().then((data) => {
-            // console.log("data--professions: ", data);
+            console.log("data--professions: ", data);
             setProfessions(data);
         });
         api.qualities.fetchAll().then((data) => {
-            // console.log("data--qualities: ", data);
+            console.log("data--qualities: ", data);
             setQualities(data);
         });
     }, []);
     const handleSubmit = (e) => {
         e.preventDefault();
-        location.href = `/users/${data._id}`;
         // const isValidate = validate();
         // if (!isValidate) return;
     };
@@ -54,9 +53,6 @@ const UserPageEdit = ({ userId }) => {
     if (data && qualities && professions) {
         return (
             <div className="container mt-5">
-                {console.log("data--user: ", data)}
-                {console.log("data--professions: ", professions)}
-                {console.log("data--qualities: ", qualities)}
                 <div className="row">
                     <div className="col-md-6 ofset-md-3 shadow p-4">
                         <form onSubmit={handleSubmit}>
@@ -113,7 +109,8 @@ const UserPageEdit = ({ userId }) => {
             </div>
         );
     }
-    return "Loading ...";
+
+    return "LOADING";
 };
 
 UserPageEdit.propTypes = {
