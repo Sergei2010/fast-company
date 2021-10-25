@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { UserPage, UserPageEdit } from "../components/page/userPage";
+import UserPage from "../components/page/userPage";
+import UserPageEdit from "../components/page/userPageEdit";
 import UsersListPage from "../components/page/usersListPage";
 
 const Users = ({ match }) => {
