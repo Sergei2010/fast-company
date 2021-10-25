@@ -97,10 +97,7 @@ const UserPageEdit = ({ userId }) => {
                             label="Выберите Ваш пол"
                         />
                         <MultiSelectField
-                            defaultValue={{
-                                _id: "67rdca3eeb7f6fgeed471198",
-                                name: "Нудила"
-                            }}
+                            defaultValue={user.qualities}
                             options={qualities}
                             onChange={handleChange}
                             name="qualities"
