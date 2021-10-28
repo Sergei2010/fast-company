@@ -4,7 +4,6 @@ import Select from "react-select";
 import PropTypes from "prop-types";
 
 const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
-    console.log(defaultValue);
     const optionsArray =
         // eslint-disable-next-line multiline-ternary
         !Array.isArray(options) && typeof options === "object"

@@ -1,11 +1,13 @@
 export function validator(data, config) {
     const errors = {};
-    function validate(validateMethod, data, config) {
+    function validate(validateMethod, data = "", config) {
         let statusValidate;
         switch (validateMethod) {
             case "isRequired": {
                 if (typeof data === "boolean") {
                     statusValidate = !data;
+                } else if (typeof data === "object") {
+                    statusValidate = data;
                 } else {
                     statusValidate = data.trim() === "";
                 }

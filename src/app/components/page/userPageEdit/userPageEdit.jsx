@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextField from "../../common/form/textField";
-import SelectField from "../../common/form/selectField";
+import { validator } from "../../../utils/validator";
+import SelectField, { OptionsArray } from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import api from "../../../api";
@@ -11,52 +12,92 @@ const UserPageEdit = ({ userId }) => {
         name: "",
         email: "",
         profession: "",
-        sex: "male",
+        sex: "",
         qualities: []
     });
     const [qualities, setQualities] = useState({});
-    const [professions, setProfessions] = useState();
-    // const [errors, setErrors] = useState({});
+    const [professions, setProfessions] = useState({});
+    const [errors, setErrors] = useState({});
     useEffect(() => {
         api.users.getById(userId).then((data) => {
-            // console.log("data--user: ", data);
             setData({
                 name: data.name,
-                email: data.email,
-                profession: data.profession.name,
+                email: (data.email = ""),
+                profession: {
+                    name: data.profession.name,
+                    _id: data.profession._id
+                },
                 qualities: data.qualities.map((quality) => ({
                     label: quality.name,
                     value: quality._id
-                }))
+                })),
+                sex: "male"
             });
         });
         api.professions.fetchAll().then((data) => {
-            // console.log("data--professions: ", data);
             setProfessions(data);
         });
         api.qualities.fetchAll().then((data) => {
-            // console.log("data--qualities: ", data);
             setQualities(data);
         });
     }, []);
     const handleSubmit = (e) => {
         e.preventDefault();
-        location.href = `/users/${data._id}`;
-        // const isValidate = validate();
-        // if (!isValidate) return;
+        const isValidate = validate();
+        if (!isValidate) return;
+        api.users.update(userId, data);
+        location.href = `/users/${userId}`;
     };
     const handleChange = (target) => {
-        setData((prevState) => ({
-            ...prevState,
-            [target.name]: target.value
-        }));
+        let professionsArray;
+        let professionObj;
+        if (target.name !== "profession") {
+            setData((prevState) => ({
+                ...prevState,
+                [target.name]: target.value
+            }));
+        }
+        if (target.name === "profession") {
+            professionsArray = OptionsArray.map((item) => ({
+                name: item.name,
+                _id: item.value
+            }));
+            professionObj = professionsArray.filter((item) => {
+                return item._id === target.value;
+            })[0];
+            setData((prevState) => ({
+                ...prevState,
+                profession: professionObj
+            }));
+        }
     };
+    const validateConfig = {
+        email: {
+            isRequired: {
+                message: "Электронная почта обязательна для заполнения"
+            },
+            isEmail: {
+                message: "Электронный адрес введён некорректно"
+            }
+        }
+        /* profession: {
+            isRequired: {
+                message: "Обязательно выберите Вашу профессию"
+            }
+        } */
+    };
+    useEffect(() => {
+        validate();
+    }, [data]);
+    const validate = () => {
+        const errors = validator(data, validateConfig);
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+    const isValid = Object.keys(errors).length === 0;
     if (data && qualities && professions) {
         return (
             <div className="container mt-5">
-                {console.log("data--user: ", data)}
-                {console.log("data--professions: ", professions)}
-                {console.log("data--qualities: ", qualities)}
                 <div className="row">
                     <div className="col-md-6 ofset-md-3 shadow p-4">
                         <form onSubmit={handleSubmit}>
@@ -65,22 +106,23 @@ const UserPageEdit = ({ userId }) => {
                                 name="name"
                                 value={data.name}
                                 onChange={handleChange}
-                                // error={errors.name}
+                                error={errors.name}
                             />
                             <TextField
-                                label="Электронная почта"
+                                label="Введите Вашу электронную почту"
+                                placeholder="email..."
                                 name="email"
                                 value={data.email}
                                 onChange={handleChange}
-                                // error={errors.email}
+                                error={errors.email}
                             />
                             <SelectField
                                 label="Выбери свою профессию"
                                 onChange={handleChange}
+                                defaultOption={data.profession.name}
                                 options={professions}
-                                defaultOption=""
-                                // error={errors.profession}
-                                value={data.profession}
+                                value={data.profession.value}
+                                error={errors.profession}
                             />
                             <RadioField
                                 options={[
@@ -102,7 +144,7 @@ const UserPageEdit = ({ userId }) => {
                             />
                             <button
                                 type="submit"
-                                // disabled={!isValid}
+                                disabled={!isValid}
                                 className="btn btn-primary w-100 mx-auto"
                             >
                                 Обновить
@@ -117,8 +159,7 @@ const UserPageEdit = ({ userId }) => {
 };
 
 UserPageEdit.propTypes = {
-    userId: PropTypes.string,
-    professions: PropTypes.object
+    userId: PropTypes.string
 };
 
 export default UserPageEdit;

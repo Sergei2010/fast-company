@@ -103,7 +103,6 @@ const RegisterForm = () => {
                 options={professions}
                 defaultOption="Choose ..."
                 error={errors.profession}
-                value={data.profession}
             />
             <RadioField
                 options={[
