@@ -5,13 +5,11 @@ import PropTypes from "prop-types";
 
 const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
     const optionsArray =
-        // eslint-disable-next-line multiline-ternary
         !Array.isArray(options) && typeof options === "object"
-            ? // eslint-disable-next-line operator-linebreak
-              // eslint-disable-next-line multiline-ternary
-              Object.keys(options).map((optionName) => ({
+            ? Object.keys(options).map((optionName) => ({
                   label: options[optionName].name,
-                  value: options[optionName]._id
+                  value: options[optionName]._id,
+                  color: options[optionName].color
               }))
             : options;
     const handleChange = (value) => {

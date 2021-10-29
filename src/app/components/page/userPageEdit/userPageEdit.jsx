@@ -6,6 +6,7 @@ import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import api from "../../../api";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const UserPageEdit = ({ userId }) => {
     const [data, setData] = useState({
@@ -15,6 +16,7 @@ const UserPageEdit = ({ userId }) => {
         sex: "",
         qualities: []
     });
+    const [dataForUpdate, setDataForUpdate] = useState({});
     const [qualities, setQualities] = useState({});
     const [professions, setProfessions] = useState({});
     const [errors, setErrors] = useState({});
@@ -22,41 +24,35 @@ const UserPageEdit = ({ userId }) => {
         api.users.getById(userId).then((data) => {
             setData({
                 name: data.name,
-                email: (data.email = ""),
+                email: data.email,
                 profession: {
                     name: data.profession.name,
                     _id: data.profession._id
                 },
                 qualities: data.qualities.map((quality) => ({
                     label: quality.name,
-                    value: quality._id
+                    value: quality._id,
+                    color: quality.color
                 })),
                 sex: "male"
             });
-        });
-        api.professions.fetchAll().then((data) => {
-            setProfessions(data);
-        });
-        api.qualities.fetchAll().then((data) => {
-            setQualities(data);
+            setDataForUpdate(data);
+            api.professions.fetchAll().then((data) => {
+                setProfessions(data);
+            });
+            api.qualities.fetchAll().then((data) => {
+                setQualities(data);
+            });
         });
     }, []);
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         const isValidate = validate();
         if (!isValidate) return;
-        api.users.update(userId, data);
-        location.href = `/users/${userId}`;
+        api.users.update(userId, dataForUpdate);
     };
     const handleChange = (target) => {
         let professionsArray;
         let professionObj;
-        if (target.name !== "profession") {
-            setData((prevState) => ({
-                ...prevState,
-                [target.name]: target.value
-            }));
-        }
         if (target.name === "profession") {
             professionsArray = OptionsArray.map((item) => ({
                 name: item.name,
@@ -69,6 +65,11 @@ const UserPageEdit = ({ userId }) => {
                 ...prevState,
                 profession: professionObj
             }));
+        } else {
+            setData((prevState) => ({
+                ...prevState,
+                [target.name]: target.value
+            }));
         }
     };
     const validateConfig = {
@@ -80,14 +81,17 @@ const UserPageEdit = ({ userId }) => {
                 message: "Электронный адрес введён некорректно"
             }
         }
-        /* profession: {
-            isRequired: {
-                message: "Обязательно выберите Вашу профессию"
-            }
-        } */
     };
     useEffect(() => {
         validate();
+        setDataForUpdate({
+            ...data,
+            qualities: data.qualities.map((quality) => ({
+                name: quality.label,
+                _id: quality.value,
+                color: quality.color
+            }))
+        });
     }, [data]);
     const validate = () => {
         const errors = validator(data, validateConfig);
@@ -104,24 +108,27 @@ const UserPageEdit = ({ userId }) => {
                             <TextField
                                 label="Имя"
                                 name="name"
-                                value={data.name}
+                                value={data.name || ""}
                                 onChange={handleChange}
                                 error={errors.name}
                             />
                             <TextField
                                 label="Введите Вашу электронную почту"
-                                placeholder="email..."
+                                placeholder={
+                                    data.email ? data.email : "email..."
+                                }
                                 name="email"
-                                value={data.email}
+                                value={data.email || ""}
                                 onChange={handleChange}
                                 error={errors.email}
                             />
                             <SelectField
                                 label="Выбери свою профессию"
+                                name="professions"
                                 onChange={handleChange}
                                 defaultOption={data.profession.name}
                                 options={professions}
-                                value={data.profession.value}
+                                value={data.profession.value || ""}
                                 error={errors.profession}
                             />
                             <RadioField
@@ -130,7 +137,7 @@ const UserPageEdit = ({ userId }) => {
                                     { name: "Female", value: "female" },
                                     { name: "Other", value: "other" }
                                 ]}
-                                value={data.sex}
+                                value={data.sex || ""}
                                 name="sex"
                                 onChange={handleChange}
                                 label="Выберите Ваш пол"
@@ -142,13 +149,17 @@ const UserPageEdit = ({ userId }) => {
                                 name="qualities"
                                 label="Выберите Ваши качества"
                             />
-                            <button
+                            <Link
+                                to={`/users/${userId}`}
                                 type="submit"
+                                onClick={() => {
+                                    handleSubmit();
+                                }}
                                 disabled={!isValid}
                                 className="btn btn-primary w-100 mx-auto"
                             >
                                 Обновить
-                            </button>
+                            </Link>
                         </form>
                     </div>
                 </div>
