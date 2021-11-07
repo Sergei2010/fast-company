@@ -81,59 +81,60 @@ const RegisterForm = () => {
         console.log("data: ", data)
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={ handleSubmit }>
             <TextField
                 label="Электронная почта"
                 name="email"
-                value={data.email}
-                onChange={handleChange}
-                error={errors.email}
+                value={ data.email }
+                onChange={ handleChange }
+                error={ errors.email }
             />
             <TextField
                 label="Пароль"
                 type="password"
                 name="password"
-                value={data.password}
-                onChange={handleChange}
-                error={errors.password}
+                value={ data.password }
+                onChange={ handleChange }
+                error={ errors.password }
             />
-            {console.log("professions: ", professions)}
+            { console.log("professions: ", professions) }
             <SelectField
                 label="Выбери свою профессию"
-                onChange={handleChange}
-                options={professions}
+                onChange={ handleChange }
+                name="profession"
+                options={ professions }
                 defaultOption="Choose ..."
-                error={errors.profession}
+                error={ errors.profession }
             />
             <RadioField
-                options={[
+                options={ [
                     { name: "Male", value: "male" },
                     { name: "Female", value: "female" },
                     { name: "Other", value: "other" },
-                ]}
-                value={data.sex}
+                ] }
+                value={ data.sex }
                 name="sex"
-                onChange={handleChange}
+                onChange={ handleChange }
                 label="Выберите Ваш пол"
             />
             <MultiSelectField
-                defaultValue={data.qualities}
-                options={qualities}
-                onChange={handleChange}
+                defaultValue={ data.qualities }
+                options={ qualities }
+                onChange={ handleChange }
                 name="qualities"
                 label="Выберите Ваши качества"
             />
             <CheckBoxField
-                value={data.licence}
-                onChange={handleChange}
+                value={ data.licence }
+                onChange={ handleChange }
                 name="licence"
-                error={errors.licence}
+                error={ errors.licence }
             >
                 Подтвердить <a>лицензионное соглашение</a>
             </CheckBoxField>
             <button
                 type="submit"
-                disabled={!isValid}
+                disabled={ !isValid }
                 className="btn btn-primary w-100 mx-auto"
             >
                 Submit

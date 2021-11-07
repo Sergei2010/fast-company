@@ -7,16 +7,23 @@ import SelectField from "../../common/form/selectField"
 import { handleTime } from "../../../utils/functions"
 import { validator } from "../../../utils/validator"
 import _ from "lodash"
+import TextareaField from "../../common/form/textareaField"
 
 const UserPage = (userId) => {
+    const [newComment, setNewComment] = useState({
+        id: "",
+        userId: "",
+        pageId: "",
+        content: "",
+        created_at: "",
+    })
     const idChecked = userId.userId
     const [users, setUsers] = useState([])
     const [user, setUser] = useState()
     const [loading, setLoading] = useState(true)
     const [, setIdForCheckedUser] = useState()
-    const [comments, setComments] = useState([])
+    const [, setComments] = useState([])
     const [commentsForUser, setCommentsForUser] = useState("")
-    const [newComment, setNewComment] = useState({})
     const [errors, setErrors] = useState({})
     useEffect(() => {
         let cleanupFunction = false
@@ -40,11 +47,15 @@ const UserPage = (userId) => {
         }
         return () => (cleanupFunction = true)
     }, [])
-    useEffect(() => {
-        setComments(comments)
-    }, [commentsForUser])
+    const handleNameChoose = (target) => {
+        setNewComment({ ...newComment, userId: target.value, pageId: idChecked })
+        setIdForCheckedUser(target.value)
+    }
+    const handleChange = ({ target }) => {
+        setNewComment({ ...newComment, content: target.value })
+    }
     const validateConfig = {
-        name: {
+        users: {
             isRequired: {
                 message: "Обязательно выберите имя для коментария",
             },
@@ -59,18 +70,11 @@ const UserPage = (userId) => {
             },
         },
     }
-    const handleNameChoose = (target) => {
-        setNewComment({ ...newComment, userId: target.value, pageId: idChecked })
-        setIdForCheckedUser(target.value)
-    }
     const handleName = (arr, id) => {
         const items = Object.values(arr).map((item) => [item._id, item.name])
         let item = items.filter(item => item[0] === id)
         item = item.toString()
         return item.slice(item.indexOf(",") + 1)
-    }
-    const handleChange = ({ target }) => {
-        setNewComment({ ...newComment, content: target.value })
     }
     const handleRemove = (id) => {
         api.comments.remove(id)
@@ -227,13 +231,15 @@ const UserPage = (userId) => {
                                             >
                                                 Сообщение
                                             </label>
-                                            <textarea
+                                            <TextareaField
                                                 className="form-control"
                                                 id="exampleFormControlTextarea1"
+                                                name="textarea"
                                                 rows="3"
                                                 onChange={ handleChange }
                                                 value={ newComment.content }
-                                            ></textarea>
+                                                error={ errors.textarea }
+                                            />
                                         </div>
                                     </div>
                                 </div>
