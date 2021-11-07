@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link } from "react-router-dom"
 
 const NavBar = () => {
     return (
@@ -22,7 +22,7 @@ const NavBar = () => {
                 </li>
             </ul>
         </div>
-    );
-};
+    )
+}
 
-export default NavBar;
+export default NavBar

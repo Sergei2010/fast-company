@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Quality from "./quality";
+import React from "react"
+import PropTypes from "prop-types"
+import Quality from "./quality"
 
 const QualitiesList = ({ qualities }) => {
     return (
@@ -9,10 +9,10 @@ const QualitiesList = ({ qualities }) => {
                 <Quality key={qual._id} {...qual} />
             ))}
         </>
-    );
-};
+    )
+}
 QualitiesList.propTypes = {
-    qualities: PropTypes.array
-};
+    qualities: PropTypes.array,
+}
 
-export default QualitiesList;
+export default QualitiesList

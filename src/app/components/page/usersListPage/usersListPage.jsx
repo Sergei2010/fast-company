@@ -1,99 +1,95 @@
-import React, { useState, useEffect } from "react";
-import SearchStatus from "../../ui/searchStatus";
-import Pagination from "../../common/pagination";
-import { paginate } from "../../../utils/paginate";
-import PropTypes from "prop-types";
-import GroupList from "../../common/groupList";
-import api from "../../../api";
-import UserTable from "../../ui/usersTable";
-import _ from "lodash";
+import React, { useState, useEffect } from "react"
+import SearchStatus from "../../ui/searchStatus"
+import Pagination from "../../common/pagination"
+import { paginate } from "../../../utils/paginate"
+import PropTypes from "prop-types"
+import GroupList from "../../common/groupList"
+import api from "../../../api"
+import UserTable from "../../ui/usersTable"
+import _ from "lodash"
 
 const UsersListPage = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfession] = useState();
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedProf, setSelectedProf] = useState();
-    const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    const pageSize = 8;
-    const [users, setUsers] = useState();
+    const [currentPage, setCurrentPage] = useState(1)
+    const [professions, setProfession] = useState()
+    const [searchQuery, setSearchQuery] = useState("")
+    const [selectedProf, setSelectedProf] = useState()
+    const [sortBy, setSortBy] = useState({ path: "name", order: "asc" })
+    const pageSize = 8
+    const [users, setUsers] = useState()
 
     useEffect(() => {
         try {
             api.users.fetchAll().then((data) => {
-                setUsers(data);
-            });
+                setUsers(data)
+            })
         } catch (e) {
-            console.error(e.message);
+            console.error(e.message)
         }
-    }, []);
+    }, [])
     const handleDelete = (userId) => {
-        const updateUsers = users.filter((user) => user._id !== userId);
-        setUsers(updateUsers);
-    };
+        const updateUsers = users.filter((user) => user._id !== userId)
+        setUsers(updateUsers)
+    }
     const handleToggleBookMark = (id) => {
         setUsers(
             users.map((user) => {
                 if (user._id === id) {
-                    return { ...user, bookmark: !user.bookmark };
+                    return { ...user, bookmark: !user.bookmark }
                 }
-                return user;
+                return user
             })
-        );
-    };
+        )
+    }
     useEffect(() => {
         api.professions.fetchAll().then((data) => {
-            setProfession(data);
-        });
-    }, []);
+            setProfession(data)
+        })
+    }, [])
     useEffect(() => {
-        setCurrentPage(1);
-    }, [selectedProf, searchQuery]);
+        setCurrentPage(1)
+    }, [selectedProf, searchQuery])
     const handlePageChange = (pageIndex) => {
-        setCurrentPage(pageIndex);
-    };
+        setCurrentPage(pageIndex)
+    }
     const handleSort = (item) => {
-        setSortBy(item);
-    };
+        setSortBy(item)
+    }
     const handleProfessionSelect = (item) => {
         if (searchQuery !== "") {
-            setSearchQuery("");
+            setSearchQuery("")
         }
-        setSelectedProf(item);
-    };
+        setSelectedProf(item)
+    }
     const handleSearchQuery = ({ target }) => {
-        setSelectedProf(undefined);
-        setSearchQuery(target.value);
-    };
+        setSelectedProf(undefined)
+        setSearchQuery(target.value)
+    }
     if (users) {
-        // eslint-disable-next-line multiline-ternary
         const filteredUsers = searchQuery
-            // eslint-disable-next-line multiline-ternary
             ? users.filter(
                   (user) =>
                       user.name
                           .toLowerCase()
                           .indexOf(searchQuery.toLowerCase()) !== -1
               )
-            // eslint-disable-next-line multiline-ternary
             : selectedProf
-            // eslint-disable-next-line multiline-ternary
             ? users.filter(
                   (user) =>
                       JSON.stringify(user.profession) ===
                       JSON.stringify(selectedProf)
               )
-            : users;
+            : users
 
-        const count = filteredUsers.length;
+        const count = filteredUsers.length
         const sortedUsers = _.orderBy(
             filteredUsers,
             [sortBy.path],
             [sortBy.order]
-        );
-        const usersCrops = paginate(sortedUsers, currentPage, pageSize);
+        )
+        const usersCrops = paginate(sortedUsers, currentPage, pageSize)
         const clearFilter = () => {
-            setSelectedProf();
-        };
+            setSelectedProf()
+        }
         return (
             <div className="d-flex">
                 {professions && (
@@ -139,10 +135,10 @@ const UsersListPage = () => {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
-    return <span className="span">Loading ...</span>;
-};
+    return <span className="span">Loading ...</span>
+}
 
 UsersListPage.propTypes = {
     users: PropTypes.array,
@@ -150,7 +146,7 @@ UsersListPage.propTypes = {
     count: PropTypes.number,
     pageSize: PropTypes.number,
     handlePageChange: PropTypes.func,
-    onRenderClasse: PropTypes.func
-};
+    onRenderClasse: PropTypes.func,
+}
 
-export default UsersListPage;
+export default UsersListPage

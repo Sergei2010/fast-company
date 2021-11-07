@@ -1,14 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from "react"
+import PropTypes from "prop-types"
 
 // eslint-disable-next-line react/prop-types
 const CheckBoxField = ({ name, value, onChange, children, error }) => {
     const handleChange = () => {
-        onChange({ name: name, value: !value });
-    };
+        onChange({ name: name, value: !value })
+    }
     const getInputClasses = () => {
-        return "form-check-input " + (error ? "is-invalid" : "");
-    };
+        return "form-check-input " + (error ? "is-invalid" : "")
+    }
     return (
         <div className="form-check mb-4">
             <input
@@ -24,8 +24,8 @@ const CheckBoxField = ({ name, value, onChange, children, error }) => {
             </label>
             {error && <div className="invalid-feedback">{error}</div>}
         </div>
-    );
-};
+    )
+}
 
 CheckBoxField.proptypes = {
     name: PropTypes.string,
@@ -33,9 +33,9 @@ CheckBoxField.proptypes = {
     onChange: PropTypes.func,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
-    error: PropTypes.string
-};
+    error: PropTypes.string,
+}
 
-export default CheckBoxField;
+export default CheckBoxField
