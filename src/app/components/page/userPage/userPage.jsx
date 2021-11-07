@@ -6,6 +6,7 @@ import Qualities from "../../ui/qualities/qualitiesList"
 import SelectField from "../../common/form/selectField"
 import { handleTime } from "../../../utils/functions"
 import { validator } from "../../../utils/validator"
+import _ from "lodash"
 
 const UserPage = (userId) => {
     const idChecked = userId.userId
@@ -98,19 +99,14 @@ const UserPage = (userId) => {
         if (!isValidate) return
         setNewComment({ ...newComment, content: "" })
         api.comments.add(newComment)
-            .then(() => {
-                const newComments = localStorage.getItem("comments")
-                setComments(newComments)
-            })
-            .then(() => {
-                api.comments.fetchCommentsForUser(idChecked).then((data) => {
-                    setCommentsForUser(data)
-                })
-            })
+        api.comments.fetchCommentsForUser(idChecked).then((data) => {
+            setCommentsForUser(data)
+        })
     }
     setTimeout(() => {
         setLoading(false)
     }, 2000)
+    const sortCommentsForUser = _.orderBy(commentsForUser, ["created_at"], ["desc"])
     return (
         <div className="d-flex">
             { user ? (
@@ -252,10 +248,10 @@ const UserPage = (userId) => {
                                     Опубликовать
                                 </button>
                             </div>
-                            <div className={ "card mb-3" + (commentsForUser.length !== 0 ? "" : " border-light") }>
+                            <div className={ "card mb-3" + (sortCommentsForUser.length !== 0 ? "" : " border-light") }>
                                 <div className="card-body">
-                                    { commentsForUser.length !== 0 ? <><h2>Comments</h2><hr /></> : "" }
-                                    { commentsForUser && commentsForUser.map((comment) => {
+                                    { sortCommentsForUser.length !== 0 ? <><h2>Comments</h2><hr /></> : "" }
+                                    { sortCommentsForUser && sortCommentsForUser.map((comment) => {
                                         return (<div className="bg-light card-body mb-3" key={ comment._id }>
                                             <div className="row">
                                                 <div className="col">
