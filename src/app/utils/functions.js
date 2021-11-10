@@ -46,7 +46,7 @@ export function handleTime(timeNow, timeBefore) {
     }
     case timeDifference > 36e5 && timeDifference <= 864e5: {
       h = Math.floor(timeDifference / 36e5)
-      min = Math.round((timeDifference % 36e5) / 1e3)
+      min = Math.round((timeDifference % 36e5) / 6e4)
       str = `${h} h ${min} min`
       break
     }
