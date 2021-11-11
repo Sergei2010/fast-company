@@ -97,7 +97,6 @@ const RegisterForm = () => {
                 onChange={ handleChange }
                 error={ errors.password }
             />
-            { console.log("professions: ", professions) }
             <SelectField
                 label="Выбери свою профессию"
                 onChange={ handleChange }

@@ -10,15 +10,15 @@ const TextareaField = ({
 	error,
 	placeholder,
 }) => {
-	/* const handleChange = ({ target }) => {
+	const handleChange = ({ target }) => {
 		onChange({ name: target.name, value: target.value })
-	} */
+	}
 	const getInputClasses = () => {
 		return "form-control " + (error ? "is-invalid" : "")
 	}
 	return (
 		<div className="mb-4">
-			<label htmlFor={ name }>{ label }</label>
+			<label htmlFor={ name } className="form-label">{ label }</label>
 			<div className="input-group has-validation">
 				<textarea
 					placeholder={ placeholder }
@@ -26,7 +26,7 @@ const TextareaField = ({
 					id={ name }
 					name={ name }
 					value={ value }
-					onChange={ onChange }
+					onChange={ handleChange }
 					className={ getInputClasses() }
 					onClick={ onClick }
 				/>
