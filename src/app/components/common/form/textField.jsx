@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react"
+import PropTypes from "prop-types"
 
 const TextField = ({
     label,
@@ -9,18 +9,18 @@ const TextField = ({
     onChange,
     onClick,
     error,
-    placeholder
+    placeholder,
 }) => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false)
     const handleChange = ({ target }) => {
-        onChange({ name: target.name, value: target.value });
-    };
+        onChange({ name: target.name, value: target.value })
+    }
     const getInputClasses = () => {
-        return "form-control " + (error ? "is-invalid" : "");
-    };
+        return "form-control " + (error ? "is-invalid" : "")
+    }
     const toggleShowPassword = () => {
-        setShowPassword((prevState) => !prevState);
-    };
+        setShowPassword((prevState) => !prevState)
+    }
     return (
         <div className="mb-4">
             <label htmlFor={name}>{label}</label>
@@ -51,9 +51,9 @@ const TextField = ({
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>
         </div>
-    );
-};
-TextField.defaultProps = { type: "text" };
+    )
+}
+TextField.defaultProps = { type: "text" }
 TextField.propTypes = {
     label: PropTypes.string,
     type: PropTypes.string,
@@ -62,7 +62,7 @@ TextField.propTypes = {
     onChange: PropTypes.func,
     onClick: PropTypes.func,
     error: PropTypes.string,
-    placeholder: PropTypes.string
-};
+    placeholder: PropTypes.string,
+}
 
-export default TextField;
+export default TextField

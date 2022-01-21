@@ -1,3 +1,3 @@
-import UserPageEdit from "./userPageEdit";
+import UserPageEdit from "./userPageEdit"
 
-export default UserPageEdit;
+export default UserPageEdit

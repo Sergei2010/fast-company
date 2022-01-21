@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
-import TextField from "../common/form/textField";
-import { validator } from "../../utils/validator";
-import CheckBoxField from "../common/form/checkBoxField";
+import React, { useState, useEffect } from "react"
+import TextField from "../common/form/textField"
+import { validator } from "../../utils/validator"
+import CheckBoxField from "../common/form/checkBoxField"
 // import * as yup from "yup";
 
 const LoginForm = () => {
     const [data, setData] = useState({
         email: "",
         password: "",
-        stayOn: false
-    });
-    const [errors, setErrors] = useState({});
+        stayOn: false,
+    })
+    const [errors, setErrors] = useState({})
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
-            [target.name]: target.value
-        }));
-    };
+            [target.name]: target.value,
+        }))
+    }
     // const validateScheme = yup.object().shape({
     //     password: yup
     //         .string()
@@ -45,47 +45,47 @@ const LoginForm = () => {
     const validateConfig = {
         email: {
             isRequired: {
-                message: "Электронная почта обязательна для заполнения"
+                message: "Электронная почта обязательна для заполнения",
             },
             isEmail: {
-                message: "Электронный адрес введён некорректно"
-            }
+                message: "Электронный адрес введён некорректно",
+            },
         },
         password: {
             isRequired: {
-                message: "Необходимо ввести пароль"
+                message: "Необходимо ввести пароль",
             },
             isCapitalSymbol: {
-                message: "Пароль должен содержать хотя бы одну заглавную букву"
+                message: "Пароль должен содержать хотя бы одну заглавную букву",
             },
             isContainDigital: {
-                message: "Пароль должен содержать хотя бы одно число"
+                message: "Пароль должен содержать хотя бы одно число",
             },
             min: {
                 message: "Пароль должен состоять минимум из 8 символов",
-                value: 8
-            }
-        }
-    };
+                value: 8,
+            },
+        },
+    }
     useEffect(() => {
-        validate();
-    }, [data]);
+        validate()
+    }, [data])
     const validate = () => {
-        const errors = validator(data, validateConfig);
+        const errors = validator(data, validateConfig)
         // validateScheme
         //     .validate(data)
         //     .then(() => setErrors({}))
         //     .catch((err) => setErrors({ [err.path]: err.message }));
-        setErrors(errors);
-        return Object.keys(errors).length === 0;
-    };
-    const isValid = Object.keys(errors).length === 0;
+        setErrors(errors)
+        return Object.keys(errors).length === 0
+    }
+    const isValid = Object.keys(errors).length === 0
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const isValidate = validate();
-        if (!isValidate) return;
-        console.log("data: ", data);
-    };
+        e.preventDefault()
+        const isValidate = validate()
+        if (!isValidate) return
+        console.log("data: ", data)
+    }
     return (
         <form onSubmit={handleSubmit}>
             <TextField
@@ -118,7 +118,7 @@ const LoginForm = () => {
                 Submit
             </button>
         </form>
-    );
-};
+    )
+}
 
-export default LoginForm;
+export default LoginForm

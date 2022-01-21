@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from "react"
+import PropTypes from "prop-types"
 import {
     Title_Classe,
     handleRenderColor,
     handleRenderPhrase
-} from "../../utils/functions";
+} from "../../utils/functions"
 
 const SearchStatus = ({ length, ...rest }) => {
     return (
@@ -15,14 +15,14 @@ const SearchStatus = ({ length, ...rest }) => {
                 </span>
             </h1>
         </>
-    );
-};
+    )
+}
 
 SearchStatus.propTypes = {
     titleClasse: PropTypes.string,
     length: PropTypes.number,
     onRenderColor: PropTypes.func,
-    onRenderPhrase: PropTypes.func
-};
+    onRenderPhrase: PropTypes.func,
+}
 
-export default SearchStatus;
+export default SearchStatus
