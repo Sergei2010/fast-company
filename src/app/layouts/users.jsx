@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import UserPage from "../components/page/userPage"
 import UserPageEdit from "../components/page/userPageEdit"
 import UsersListPage from "../components/page/usersListPage"
+import UserProvider from "../hooks/useUsers"
 
 const Users = ({ match }) => {
     const userId = match.params.userId
@@ -10,15 +11,17 @@ const Users = ({ match }) => {
     return (
         /* eslint-disable */
         <>
-            {userId ? (
-                edit ? (
-                    <UserPageEdit edit={edit} userId={userId} />
+            <UserProvider>
+                { userId ? (
+                    edit ? (
+                        <UserPageEdit edit={ edit } userId={ userId } />
+                    ) : (
+                        <UserPage userId={ userId } />
+                    )
                 ) : (
-                    <UserPage userId={userId} />
-                )
-            ) : (
-                <UsersListPage />
-            )}
+                    <UsersListPage />
+                ) }
+            </UserProvider>
         </>
     );
 };

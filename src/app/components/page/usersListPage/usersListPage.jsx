@@ -7,6 +7,7 @@ import GroupList from "../../common/groupList"
 import api from "../../../api"
 import UserTable from "../../ui/usersTable"
 import _ from "lodash"
+import { useUser } from "../../../hooks/useUsers"
 
 const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1)
@@ -15,30 +16,20 @@ const UsersListPage = () => {
     const [selectedProf, setSelectedProf] = useState()
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" })
     const pageSize = 8
-    const [users, setUsers] = useState()
-
-    useEffect(() => {
-        try {
-            api.users.fetchAll().then((data) => {
-                setUsers(data)
-            })
-        } catch (e) {
-            console.error(e.message)
-        }
-    }, [])
+    const { users } = useUser()
+    console.log(users)
     const handleDelete = (userId) => {
-        const updateUsers = users.filter((user) => user._id !== userId)
-        setUsers(updateUsers)
+        // const updateUsers = users.filter((user) => user._id !== userId)
+        console.log(userId)
     }
     const handleToggleBookMark = (id) => {
-        setUsers(
-            users.map((user) => {
-                if (user._id === id) {
-                    return { ...user, bookmark: !user.bookmark }
-                }
-                return user
-            })
-        )
+        const newArray = users.map((user) => {
+            if (user._id === id) {
+                return { ...user, bookmark: !user.bookmark }
+            }
+            return user
+        })
+        console.log(newArray)
     }
     useEffect(() => {
         api.professions.fetchAll().then((data) => {
@@ -67,18 +58,18 @@ const UsersListPage = () => {
     if (users) {
         const filteredUsers = searchQuery
             ? users.filter(
-                  (user) =>
-                      user.name
-                          .toLowerCase()
-                          .indexOf(searchQuery.toLowerCase()) !== -1
-              )
+                (user) =>
+                    user.name
+                        .toLowerCase()
+                        .indexOf(searchQuery.toLowerCase()) !== -1
+            )
             : selectedProf
-            ? users.filter(
-                  (user) =>
-                      JSON.stringify(user.profession) ===
-                      JSON.stringify(selectedProf)
-              )
-            : users
+                ? users.filter(
+                    (user) =>
+                        JSON.stringify(user.profession) ===
+                        JSON.stringify(selectedProf)
+                )
+                : users
 
         const count = filteredUsers.length
         const sortedUsers = _.orderBy(
@@ -92,45 +83,45 @@ const UsersListPage = () => {
         }
         return (
             <div className="d-flex">
-                {professions && (
+                { professions && (
                     <div className="d-flex flex-column flex-shrink-0 p-3">
                         <GroupList
-                            selectedItem={selectedProf}
-                            items={professions}
-                            onItemSelect={handleProfessionSelect}
+                            selectedItem={ selectedProf }
+                            items={ professions }
+                            onItemSelect={ handleProfessionSelect }
                         />
                         <button
                             className="btn btn-secondary mt-2"
-                            onClick={clearFilter}
+                            onClick={ clearFilter }
                         >
                             Очистить
                         </button>
                     </div>
-                )}
+                ) }
                 <div className="d-flex flex-column">
-                    <SearchStatus length={count} />
+                    <SearchStatus length={ count } />
                     <input
                         type="text"
                         name="searchQuery"
                         placeholder="Search ..."
-                        onChange={handleSearchQuery}
-                        value={searchQuery}
+                        onChange={ handleSearchQuery }
+                        value={ searchQuery }
                     />
-                    {count > 0 && (
+                    { count > 0 && (
                         <UserTable
-                            users={usersCrops}
-                            onSort={handleSort}
-                            selectedSort={sortBy}
-                            onDelete={handleDelete}
-                            onToggleBookMark={handleToggleBookMark}
+                            users={ usersCrops }
+                            onSort={ handleSort }
+                            selectedSort={ sortBy }
+                            onDelete={ handleDelete }
+                            onToggleBookMark={ handleToggleBookMark }
                         />
-                    )}
+                    ) }
                     <div className="d-flex justify-content-center">
                         <Pagination
-                            itemsCount={count}
-                            pageSize={pageSize}
-                            currentPage={currentPage}
-                            onPageChange={handlePageChange}
+                            itemsCount={ count }
+                            pageSize={ pageSize }
+                            currentPage={ currentPage }
+                            onPageChange={ handlePageChange }
                         />
                     </div>
                 </div>

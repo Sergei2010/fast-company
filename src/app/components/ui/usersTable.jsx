@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import BookMark from "../common/bookmark"
 import Qualities from "./qualities"
 import Table from "../common/table"
+import Profession from "./profession"
 
 const UserTable = ({
     users,
@@ -18,14 +19,14 @@ const UserTable = ({
             path: "name",
             name: "Имя",
             component: (user) => (
-                <Link to={`/users/${user._id}`}>{user.name}</Link>
+                <Link to={ `/users/${user._id}` }>{ user.name }</Link>
             ),
         },
         qualities: {
             name: "Качество",
-            component: (user) => <Qualities qualities={user.qualities} />,
+            component: (user) => <Qualities qualities={ user.qualities } />,
         },
-        professions: { path: "profession.name", name: "Профессия" },
+        professions: { name: "Профессия", component: (user) => <Profession id={ user.profession } /> },
         completedMeetings: {
             path: "completedMeetings",
             name: "Встретился, раз",
@@ -36,15 +37,15 @@ const UserTable = ({
             name: "Избранное",
             component: (user) => (
                 <BookMark
-                    status={user.bookmark}
-                    onClick={() => onToggleBookMark(user._id)}
+                    status={ user.bookmark }
+                    onClick={ () => onToggleBookMark(user._id) }
                 />
             ),
         },
         delete: {
             component: (user) => (
                 <button
-                    onClick={() => onDelete(user._id)}
+                    onClick={ () => onDelete(user._id) }
                     type="button"
                     className="btn-sm btn-danger"
                 >
@@ -55,10 +56,10 @@ const UserTable = ({
     }
     return (
         <Table
-            onSort={onSort}
-            selectedSort={selectedSort}
-            columns={columns}
-            data={users}
+            onSort={ onSort }
+            selectedSort={ selectedSort }
+            columns={ columns }
+            data={ users }
         />
     )
 }
