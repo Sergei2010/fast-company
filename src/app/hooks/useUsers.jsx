@@ -34,7 +34,6 @@ const UserProvider = ({ children }) => {
 	function errorCatcher(error) {
 		const { message } = error.response.data
 		setError(message)
-		setLoading(false)
 	}
 	return (
 		<UserContext.Provider value={ { users } }>
@@ -44,7 +43,10 @@ const UserProvider = ({ children }) => {
 }
 
 UserProvider.propTypes = {
-	children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+	children: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.node),
+		PropTypes.node,
+	]),
 }
 
 export default UserProvider
