@@ -4,6 +4,7 @@ import axios from "axios"
 import userService from "../services/user.service"
 import { toast } from "react-toastify"
 import localStorageService, { setTokens } from "../services/localStorage.service"
+import { useHistory } from "react-router-dom"
 
 // создаю экземпляр axios
 export const httpAuth = axios.create({
@@ -19,8 +20,10 @@ export const useAuth = () => {
 }
 
 const AuthProvider = ({ children }) => {
-	const [currentUser, setUser] = useState({})
+	const [currentUser, setUser] = useState()
 	const [error, setError] = useState(null)
+	const [isLoading, setLoading] = useState(true)
+	const history = useHistory()
 
 	async function logIn({ email, password }) {
 		try {
@@ -31,7 +34,7 @@ const AuthProvider = ({ children }) => {
 			})
 			setTokens(data)
 			// беру данные currentUser из localStorage
-			getUserData()
+			await getUserData()
 		} catch (error) {
 			errorCatcher(error)
 			const { code, message } = error.response.data.error
@@ -46,6 +49,11 @@ const AuthProvider = ({ children }) => {
 			}
 		}
 	}
+	function logOut() {
+		localStorageService.removeAuthData()
+		setUser(null)
+		history.push("/")
+	}
 	// функция генерирования случайных чисел
 	function randomInt(min, max) {
 		return Math.floor(Math.random() * (max - min + 1) + min)
@@ -58,7 +66,18 @@ const AuthProvider = ({ children }) => {
 				returnSecureToken: true,
 			})
 			setTokens(data)
-			await createUser({ _id: data.localId, email, rate: randomInt(1, 5), completedMeetings: randomInt(0, 200), ...rest })
+			await createUser({
+				_id: data.localId,
+				email,
+				rate: randomInt(1, 5),
+				completedMeetings: randomInt(0, 200),
+				image: `https://avatars.dicebear.com/api/avataaars/${(
+					Math.random() + 1
+				)
+					.toString(36)
+					.substring(7)}.svg`,
+				...rest,
+			})
 		} catch (error) {
 			errorCatcher(error)
 			const { code, message } = error.response.data.error
@@ -90,12 +109,16 @@ const AuthProvider = ({ children }) => {
 			setUser(content)
 		} catch (error) {
 			errorCatcher(error)
+		} finally {
+			setLoading(false)
 		}
 	}
 
 	useEffect(() => {
 		if (localStorageService.getAccessToken()) {
 			getUserData()
+		} else {
+			setLoading(false)
 		}
 	}, [])
 	useEffect(() => {
@@ -105,8 +128,8 @@ const AuthProvider = ({ children }) => {
 		}
 	}, [error])
 	return (
-		<AuthContext.Provider value={ { signUp, logIn, currentUser } }>
-			{ children }
+		<AuthContext.Provider value={ { signUp, logIn, logOut, currentUser } }>
+			{ !isLoading ? children : "Loading ..." }
 		</AuthContext.Provider>
 	)
 }
