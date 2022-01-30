@@ -4,7 +4,6 @@ import { validator } from "../../utils/validator"
 import CheckBoxField from "../common/form/checkBoxField"
 import { useAuth } from "../../hooks/useAuth"
 import { useHistory } from "react-router-dom"
-// import * as yup from "yup";
 
 const LoginForm = () => {
     const [data, setData] = useState({
@@ -50,7 +49,7 @@ const LoginForm = () => {
         if (!isValidate) return
         try {
             await logIn(data)
-            history.push("/")
+            history.push(history.location.state ? history.location.state.from.pathname : "/")
         } catch (error) {
             setEnterError(error.message)
         }

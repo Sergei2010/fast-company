@@ -11,7 +11,7 @@ export const useProfessions = () => {
 export const ProfessionProvider = ({ children }) => {
 	const [isLoading, setLoading] = useState(true)
 	const [professions, setProfessions] = useState([])
-	const [error, setError] = useState({})
+	const [error, setError] = useState(null)
 	useEffect(() => {
 		if (error !== null) {
 			toast(error)
@@ -21,6 +21,10 @@ export const ProfessionProvider = ({ children }) => {
 	useEffect(() => {
 		getProfessionsList()
 	}, [])
+	function errorCatcher(error) {
+		const { message } = error.response.data
+		setError(message)
+	}
 	function getProfession(id) {
 		return professions.find((p) => p._id === id)
 	}
@@ -33,19 +37,27 @@ export const ProfessionProvider = ({ children }) => {
 			errorCatcher(error)
 		}
 	}
-	function errorCatcher(error) {
+	/* function errorCatcher(error) {
 		try {
 			const { message } = (error.response.data)
 			setError(message)
 		} catch (error) {
 			return "Some Mistake"
 		}
-	}
+	} */
 
-	return (<ProfessionContext.Provider value={ { isLoading, professions, getProfession } }>{ children }</ProfessionContext.Provider>
+	return (
+		<ProfessionContext.Provider
+			value={ { isLoading, professions, getProfession } }
+		>
+			{ children }
+		</ProfessionContext.Provider>
 	)
 }
 
 ProfessionProvider.propTypes = {
-	children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+	children: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.node),
+		PropTypes.node,
+	]),
 }
