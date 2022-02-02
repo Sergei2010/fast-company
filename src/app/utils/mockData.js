@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react"
-
+import { useEffect, useState } from "react"
 import professions from "../mockData/professions.json"
 import qualities from "../mockData/qualities.json"
 import users from "../mockData/users.json"
@@ -7,7 +6,7 @@ import httpService from "../services/http.service"
 
 const useMockData = () => {
   const statusConsts = {
-    idle: "NotStarted",
+    idle: "Not Started",
     pending: "In Process",
     successed: "Ready",
     error: "Error occured",
@@ -17,7 +16,9 @@ const useMockData = () => {
   const [progress, setProgress] = useState(0)
   const [count, setCount] = useState(0)
   const summuryCount = professions.length + qualities.length + users.length
-
+  const incrementCount = () => {
+    setCount((prevState) => prevState + 1)
+  }
   const updateProgress = () => {
     if (count !== 0 && status === statusConsts.idle) {
       setStatus(statusConsts.pending)
@@ -34,12 +35,6 @@ const useMockData = () => {
   useEffect(() => {
     updateProgress()
   }, [count])
-
-  const incrementCount = () => {
-    setCount((prevState) => prevState + 1)
-  }
-
-  // функция для инициализации данных
   async function initialize() {
     try {
       for (const prof of professions) {
@@ -59,6 +54,7 @@ const useMockData = () => {
       setStatus(statusConsts.error)
     }
   }
+
   return { error, initialize, progress, status }
 }
 
