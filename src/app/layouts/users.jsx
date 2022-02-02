@@ -1,22 +1,25 @@
 import React from "react"
-import { Redirect } from "react-router-dom"
-import PropTypes from "prop-types"
-import UserPage from "../components/page/userPage"
+import { useParams, Redirect } from "react-router-dom"
 import EditUserPage from "../components/page/editUserPage"
+import UserPage from "../components/page/userPage"
 import UsersListPage from "../components/page/usersListPage"
-import UserProvider from "../hooks/useUsers"
 import { useAuth } from "../hooks/useAuth"
+import UserProvider from "../hooks/useUsers"
 
-const Users = ({ match }) => {
-    const userId = match.params.userId
-    const edit = match.params.edit
+const Users = () => {
+    const params = useParams()
+    const { userId, edit } = params
     const { currentUser } = useAuth()
     return (
-        /* eslint-disable */
         <>
             <UserProvider>
                 { userId ? (
-                    edit ? (userId === currentUser._id ? <EditUserPage /> : <Redirect to={ `/users/${currentUser._id / edit}` } />
+                    edit ? (
+                        userId === currentUser._id ? (
+                            <EditUserPage />
+                        ) : (
+                            <Redirect to={ `/users/${currentUser._id}/edit}` } />
+                        )
                     ) : (
                         <UserPage userId={ userId } />
                     )
@@ -25,11 +28,7 @@ const Users = ({ match }) => {
                 ) }
             </UserProvider>
         </>
-    );
-};
+    )
+}
 
-Users.propTypes = {
-    match: PropTypes.object.isRequired
-};
-
-export default Users;
+export default Users
