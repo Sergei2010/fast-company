@@ -33,10 +33,6 @@ export const QualitiesProvider = ({ children }) => {
 			setError(null)
 		}
 	}, [error])
-	// function errorCatcher(error) {
-	// const { message } = (error.response.data) || "Some Mistake")
-	// setError(message)
-	// }
 	function errorCatcher(error) {
 		try {
 			const { message } = (error.response.data)
