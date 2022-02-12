@@ -5,14 +5,13 @@ import SelectField from "../common/form/selectField"
 import RadioField from "../common/form/radioField"
 import MultiSelectField from "../common/form/multiSelectField"
 import CheckBoxField from "../common/form/checkBoxField"
-import { useProfessions } from "../../hooks/useProfession"
-import { useAuth } from "../../hooks/useAuth"
-import { useHistory } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { getQualities } from "../../store/qualities"
+import { getProfessions } from "../../store/professions"
+import { signUp } from "../../store/users"
 
 const RegisterForm = () => {
-    const history = useHistory()
+    const dispatch = useDispatch()
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -22,10 +21,10 @@ const RegisterForm = () => {
         qualities: [],
         licence: false,
     })
-    const { signUp } = useAuth()
+
     const qualities = useSelector(getQualities())
     const qualitiesList = qualities.map(q => ({ label: q.name, value: q._id }))
-    const { professions } = useProfessions()
+    const professions = useSelector(getProfessions())
     const professionsList = professions.map(p => ({ label: p.name, value: p._id }))
     const [errors, setErrors] = useState({})
     const handleChange = (target) => {
@@ -93,12 +92,7 @@ const RegisterForm = () => {
         const isValidate = validate()
         if (!isValidate) return
         const newData = { ...data, qualities: data.qualities.map(q => q.value) }
-        try {
-            await signUp(newData)
-            history.push("/")
-        } catch (error) {
-            setErrors(error)
-        }
+        dispatch(signUp(newData))
     }
     return (
         <form onSubmit={ handleSubmit }>
