@@ -6,20 +6,22 @@ import SelectField from "../../common/form/selectField"
 import RadioField from "../../common/form/radio.Field"
 import MultiSelectField from "../../common/form/multiSelectField"
 import BackHistoryButton from "../../common/backButton"
-import { useAuth } from "../../../hooks/useAuth"
-import { useProfessions } from "../../../hooks/useProfession"
 import { useSelector } from "react-redux"
 import { getQualities, getQualitiesLoadingStatus } from "../../../store/qualities"
+import { getProfessions, getProfessionsLoadingStatus } from "../../../store/professions"
+import { getCurrentUserData } from "../../../store/users"
+import { useAuth } from "../../../hooks/useAuth"
 
 const EditUserPage = () => {
     const history = useHistory()
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState()
-    const { currentUser, updateUserData } = useAuth()
-
+    const currentUser = useSelector(getCurrentUserData())
+    const { updateUserData } = useAuth()
     const qualities = useSelector(getQualities())
     const qualitiesLoading = useSelector(getQualitiesLoadingStatus())
-    const { professions, isLoading: professionsLoading } = useProfessions()
+    const professions = useSelector(getProfessions())
+    const professionsLoading = useSelector(getProfessionsLoadingStatus())
     const qualitiesList = qualities.map(q => ({ label: q.name, value: q._id }))
     const professionsList = professions.map(p => ({ label: p.name, value: p._id }))
     const [errors, setErrors] = useState({})

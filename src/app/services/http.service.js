@@ -1,8 +1,9 @@
 import axios from "axios"
 import configFile from "../config.json"
 import { toast } from "react-toastify"
-import { httpAuth } from "../hooks/useAuth"
+// import { httpAuth } from "../hooks/useAuth"
 import localStorageService from "./localStorage.service"
+import authService from "./auth.service"
 
 // создаю новый экземпляр axios
 const http = axios.create({
@@ -18,11 +19,9 @@ http.interceptors.request.use(
       const expiresDate = localStorageService.getTokenExpiresDate()
       const refreshToken = localStorageService.getRefreshToken()
       if (refreshToken && expiresDate < Date.now()) {
-        const { data } = await httpAuth.post("token", {
-          grant_type: "refresh_token",
-          refresh_token: refreshToken,
-        })
-        // меняю названия переменных, т.к. получаю данные в другом фориате
+        const data = await authService.refresh()
+
+        // меняю названия переменных, т.к. получаю данные в другом фориатеs
         localStorageService.setTokens({
           refreshToken: data.refresh_token,
           idToken: data.id_token,

@@ -42,8 +42,12 @@ const UserProvider = ({ children }) => {
 		}
 	}, [error])
 	function errorCatcher(error) {
-		const { message } = error.response.data
-		setError(message)
+		try {
+			const { message } = (error.response.data)
+			setError(message)
+		} catch (error) {
+			return "Some Mistake"
+		}
 	}
 	function getUserById(userId) {
 		return users.find((u) => u._id === userId)

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import qualityService from "../services/quality.service"
+import isOutDated from "../utils/isOutDated"
 
 const qualitiesSlice = createSlice({
   name: "qualities",
@@ -7,15 +8,17 @@ const qualitiesSlice = createSlice({
     entities: null,
     isLoading: true,
     error: null,
+    lastFetch: null,
   },
   reducers: {
     // запрос
     qualitiesRequested: (state) => {
       state.isLoading = true
     },
-    // результат
+    // обработка успешного результата
     qualitiesReceved: (state, action) => {
       state.entities = action.payload
+      state.lastFetch = Date.now()
       state.isLoading = false
     },
     // обработка неуспешного результата
@@ -30,13 +33,18 @@ const { reducer: qualitiesReducer, actions } = qualitiesSlice
 
 const { qualitiesRequested, qualitiesReceved, qualitiesRequestFiled } = actions
 
-export const loadQualityList = () => async (dispatch) => {
-  dispatch(qualitiesRequested())
-  try {
-    const { content } = await qualityService.fetchAll()
-    dispatch(qualitiesReceved(content))
-  } catch (error) {
-    dispatch(qualitiesRequestFiled(error.message))
+export const loadQualitiesList = () => async (dispatch, getState) => {
+  const { lastFetch } = getState().qualities
+  // проверка актуальности данных (10 минут)
+  if (isOutDated(lastFetch)) {
+    console.log(lastFetch)
+    dispatch(qualitiesRequested())
+    try {
+      const { content } = await qualityService.fetchAll()
+      dispatch(qualitiesReceved(content))
+    } catch (error) {
+      dispatch(qualitiesRequestFiled(error.message))
+    }
   }
 }
 

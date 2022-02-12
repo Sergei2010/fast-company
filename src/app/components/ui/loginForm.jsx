@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react"
 import TextField from "../common/form/textField"
 import { validator } from "../../utils/validator"
 import CheckBoxField from "../common/form/checkBoxField"
-import { useAuth } from "../../hooks/useAuth"
 import { useHistory } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { login } from "../../store/users"
 
 const LoginForm = () => {
     const [data, setData] = useState({
@@ -12,7 +13,7 @@ const LoginForm = () => {
         stayOn: false,
     })
     const history = useHistory()
-    const { logIn } = useAuth()
+    const dispatch = useDispatch()
     const [errors, setErrors] = useState({})
     const [enterError, setEnterError] = useState(null)
     const handleChange = (target) => {
@@ -43,16 +44,12 @@ const LoginForm = () => {
         return Object.keys(errors).length === 0
     }
     const isValid = Object.keys(errors).length === 0
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         const isValidate = validate()
         if (!isValidate) return
-        try {
-            await logIn(data)
-            history.push(history.location.state ? history.location.state.from.pathname : "/")
-        } catch (error) {
-            setEnterError(error.message)
-        }
+        const redirect = history.location.state ? history.location.state.from.pathname : "/"
+        dispatch(login({ payload: data, redirect }))
     }
     return (
         <form onSubmit={ handleSubmit }>
