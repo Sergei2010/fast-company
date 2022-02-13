@@ -38,7 +38,6 @@ export const loadProfessionsList = () => async (dispatch, getState) => {
   const { lastFetch } = getState().professions
   // проверка актуальности данных (10 минут)
   if (isOutDated(lastFetch)) {
-    console.log(lastFetch)
     dispatch(professionsRequested())
     try {
       const { content } = await professionService.get()

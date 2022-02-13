@@ -37,7 +37,6 @@ export const loadQualitiesList = () => async (dispatch, getState) => {
   const { lastFetch } = getState().qualities
   // проверка актуальности данных (10 минут)
   if (isOutDated(lastFetch)) {
-    console.log(lastFetch)
     dispatch(qualitiesRequested())
     try {
       const { content } = await qualityService.fetchAll()
